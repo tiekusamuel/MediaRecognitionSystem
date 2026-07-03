@@ -32,6 +32,3 @@ D:\MediaRecognitionSystem\backend\obj\Debug\net10.0\refint\backend.dll
 D:\MediaRecognitionSystem\backend\obj\Debug\net10.0\backend.pdb
 D:\MediaRecognitionSystem\backend\obj\Debug\net10.0\backend.genruntimeconfig.cache
 D:\MediaRecognitionSystem\backend\obj\Debug\net10.0\ref\backend.dll
-D:\MediaRecognitionSystem\backend\bin\Debug\net10.0\Swashbuckle.AspNetCore.Swagger.dll
-D:\MediaRecognitionSystem\backend\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerGen.dll
-D:\MediaRecognitionSystem\backend\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerUI.dll
