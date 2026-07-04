@@ -68,9 +68,10 @@ namespace backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ImdbId");
+                    b.HasIndex("ImdbId")
+                        .HasDatabaseName("IX_Movies_ImdbId");
 
-                    b.ToTable("Movies");
+                    b.ToTable("Movies", (string)null);
                 });
 
             modelBuilder.Entity("backend.Models.MusicTrack", b =>
@@ -125,9 +126,51 @@ namespace backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Isrc");
+                    b.HasIndex("Isrc")
+                        .HasDatabaseName("IX_MusicTracks_Isrc");
 
-                    b.ToTable("MusicTracks");
+                    b.ToTable("MusicTracks", (string)null);
+                });
+
+            modelBuilder.Entity("backend.Models.Recognition", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<decimal>("Accuracy")
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt")
+                        .HasDatabaseName("IX_Recognitions_CreatedAt");
+
+                    b.HasIndex("Type")
+                        .HasDatabaseName("IX_Recognitions_Type");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("IX_Recognitions_UserId");
+
+                    b.HasIndex("UserId", "Type")
+                        .HasDatabaseName("IX_Recognitions_UserId_Type");
+
+                    b.ToTable("Recognitions", (string)null);
                 });
 
             modelBuilder.Entity("backend.Models.RecognitionHistory", b =>
@@ -175,11 +218,13 @@ namespace backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatedAt");
+                    b.HasIndex("CreatedAt")
+                        .HasDatabaseName("IX_RecognitionHistories_CreatedAt");
 
-                    b.HasIndex("Type");
+                    b.HasIndex("Type")
+                        .HasDatabaseName("IX_RecognitionHistories_Type");
 
-                    b.ToTable("RecognitionHistories");
+                    b.ToTable("RecognitionHistories", (string)null);
                 });
 
             modelBuilder.Entity("backend.Models.Scene", b =>
@@ -219,9 +264,68 @@ namespace backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MovieId");
+                    b.HasIndex("MovieId")
+                        .HasDatabaseName("IX_Scenes_MovieId");
 
-                    b.ToTable("Scenes");
+                    b.ToTable("Scenes", (string)null);
+                });
+
+            modelBuilder.Entity("backend.Models.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<string>("Avatar")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<DateTime>("JoinDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Users_Email");
+
+                    b.HasIndex("Username")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Users_Username");
+
+                    b.ToTable("Users", (string)null);
+                });
+
+            modelBuilder.Entity("backend.Models.Recognition", b =>
+                {
+                    b.HasOne("backend.Models.User", "User")
+                        .WithMany("Recognitions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_Recognitions_Users");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("backend.Models.Scene", b =>
@@ -238,6 +342,11 @@ namespace backend.Migrations
             modelBuilder.Entity("backend.Models.Movie", b =>
                 {
                     b.Navigation("Scenes");
+                });
+
+            modelBuilder.Entity("backend.Models.User", b =>
+                {
+                    b.Navigation("Recognitions");
                 });
 #pragma warning restore 612, 618
         }
