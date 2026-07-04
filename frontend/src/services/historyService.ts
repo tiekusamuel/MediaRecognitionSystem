@@ -11,7 +11,6 @@ export interface HistoryItem {
   details?: any;
 }
 
-
 export interface HistoryResponse {
   items: HistoryItem[];
   totalCount: number;
@@ -27,6 +26,14 @@ export interface HistoryFilters {
   pageSize?: number;
   sortBy?: 'date' | 'confidence' | 'title';
   sortOrder?: 'asc' | 'desc';
+}
+
+// Backend API Response wrapper
+interface ApiResponse<T> {
+  success: boolean;
+  data: T;
+  message: string;
+  errors: string[];
 }
 
 // History service functions
@@ -56,37 +63,41 @@ const historyService = {
       params.append('sortOrder', filters.sortOrder);
     }
 
-    const response = await api.get<HistoryResponse>(`/history?${params.toString()}`);
-    return response.data;
+    const response = await api.get<ApiResponse<HistoryResponse>>(
+      `/api/History?${params.toString()}`
+    );
+    return response.data.data;
   },
 
   /**
    * Get single history item details
    */
   getHistoryItem: async (id: string): Promise<HistoryItem> => {
-    const response = await api.get<HistoryItem>(`/history/${id}`);
-    return response.data;
+    const response = await api.get<ApiResponse<HistoryItem>>(
+      `/api/History/${id}`
+    );
+    return response.data.data;
   },
 
   /**
    * Delete history item
    */
   deleteHistoryItem: async (id: string): Promise<void> => {
-    await api.delete(`/history/${id}`);
+    await api.delete(`/api/History/${id}`);
   },
 
   /**
    * Delete multiple history items
    */
   deleteMultipleItems: async (ids: string[]): Promise<void> => {
-    await api.post('/history/delete-multiple', { ids });
+    await api.post('/api/History/delete-multiple', { ids });
   },
 
   /**
    * Clear all history
    */
   clearHistory: async (): Promise<void> => {
-    await api.delete('/history/clear');
+    await api.delete('/api/History/clear');
   },
 };
 

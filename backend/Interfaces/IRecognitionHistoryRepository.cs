@@ -13,5 +13,7 @@ namespace backend.Interfaces
             CancellationToken cancellationToken = default);
         Task<int> GetCountByTypeAsync(RecognitionType type, CancellationToken cancellationToken = default);
         Task<RecognitionHistory> AddAsync(RecognitionHistory history, CancellationToken cancellationToken = default);
+        Task DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+        Task ClearAsync(CancellationToken cancellationToken = default);
     }
 }

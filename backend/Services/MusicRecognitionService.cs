@@ -105,6 +105,16 @@ namespace backend.Services
             };
         }
 
+        public async Task DeleteRecognitionResultAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            await _historyRepository.DeleteAsync(id, cancellationToken);
+        }
+
+        public async Task ClearHistoryAsync(CancellationToken cancellationToken = default)
+        {
+            await _historyRepository.ClearAsync(cancellationToken);
+        }
+
         private async Task SaveRecognitionHistoryAsync(
             string fileName,
             RecognitionType type,

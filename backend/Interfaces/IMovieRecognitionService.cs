@@ -24,5 +24,9 @@ namespace backend.Interfaces
             int pageNumber = 1, 
             int pageSize = 10,
             CancellationToken cancellationToken = default);
+
+        Task DeleteRecognitionResultAsync(Guid id, CancellationToken cancellationToken = default);
+        Task ClearHistoryAsync(CancellationToken cancellationToken = default);
     }
+
 }

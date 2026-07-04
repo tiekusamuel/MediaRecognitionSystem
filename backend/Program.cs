@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using backend.Configuration;
+using backend.Interfaces;
 using backend.Services;
 
 
@@ -103,6 +104,9 @@ builder.Services.AddAuthentication(options =>
         }
     };
 });
+
+// Add this to your service registration
+builder.Services.AddScoped<IHistoryService, HistoryService>();
 
 builder.Services.AddAuthorization();
 

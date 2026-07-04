@@ -54,5 +54,24 @@ namespace backend.Repositories
             await _context.SaveChangesAsync(cancellationToken);
             return history;
         }
+
+        public async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            var entity = await _context.RecognitionHistories
+                .FirstOrDefaultAsync(r => r.Id == id, cancellationToken);
+
+            if (entity != null)
+            {
+                _context.RecognitionHistories.Remove(entity);
+                await _context.SaveChangesAsync(cancellationToken);
+            }
+        }
+
+        public async Task ClearAsync(CancellationToken cancellationToken = default)
+        {
+            var entities = await _context.RecognitionHistories.ToListAsync(cancellationToken);
+            _context.RecognitionHistories.RemoveRange(entities);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
     }
 }
