@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Recognition - Microphone</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .recording-section {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .mic-button {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 60px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mic-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        .mic-button:active {
+            transform: scale(0.95);
+        }
+
+        .mic-button.recording {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 10px 30px rgba(245, 87, 108, 0.4);
+            }
+            50% {
+                box-shadow: 0 10px 50px rgba(245, 87, 108, 0.8);
+            }
+        }
+
+        .status {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #666;
+            min-height: 30px;
+        }
+
+        .status.recording {
+            color: #f5576c;
+            font-weight: bold;
+        }
+
+        .timer {
+            font-size: 2em;
+            color: #667eea;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .result-container {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .result-container.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-title {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .result-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            font-weight: bold;
+            color: #667eea;
+            display: inline-block;
+            width: 150px;
+        }
+
+        .result-value {
+            color: #333;
+        }
+
+        .confidence-bar {
+            width: 100%;
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .error {
+            background: #fee;
+            border: 1px solid #fcc;
+            color: #c33;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .error.show {
+            display: block;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .instructions {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .instructions h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .instructions ul {
+            margin-left: 20px;
+            color: #666;
+        }
+
+        .instructions li {
+            margin: 5px 0;
+        }
+
+        .album-art {
+            width: 100%;
+            max-width: 200px;
+            height: auto;
+            border-radius: 10px;
+            margin: 15px auto;
+            display: block;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎵 Music Recognition</h1>
+        <p class="subtitle">Record audio to identify the song</p>
+
+        <div class="instructions">
+            <h3>How to use:</h3>
+            <ul>
+                <li>Click the microphone button to start recording</li>
+                <li>Play the music you want to identify</li>
+                <li>Recording will automatically stop after 15 seconds</li>
+                <li>Or click again to stop manually</li>
+                <li>Wait for the results!</li>
+            </ul>
+        </div>
+
+        <div class="recording-section">
+            <button id="micButton" class="mic-button" title="Click to start recording">
+                🎤
+            </button>
+            <div id="status" class="status">Ready to record</div>
+            <div id="timer" class="timer"></div>
+        </div>
+
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p style="margin-top: 15px; color: #667eea;">Analyzing audio...</p>
+        </div>
+
+        <div id="error" class="error"></div>
+
+        <div id="resultContainer" class="result-container">
+            <h2 class="result-title">🎵 Recognition Result</h2>
+            <div id="resultContent"></div>
+        </div>
+    </div>
+
+    <script>
+        let mediaRecorder;
+        let audioChunks = [];
+        let isRecording = false;
+        let recordingStartTime;
+        let timerInterval;
+        const MAX_RECORDING_TIME = 15; // seconds
+
+        const micButton = document.getElementById('micButton');
+        const statusDiv = document.getElementById('status');
+        const timerDiv = document.getElementById('timer');
+        const loadingDiv = document.getElementById('loading');
+        const errorDiv = document.getElementById('error');
+        const resultContainer = document.getElementById('resultContainer');
+        const resultContent = document.getElementById('resultContent');
+
+        // API endpoint - update this to match your API URL
+        const API_URL = 'https://localhost:7001/api/musicrecognition/recognize/microphone';
+
+        micButton.addEventListener('click', toggleRecording);
+
+        async function toggleRecording() {
+            if (!isRecording) {
+                await startRecording();
+            } else {
+                stopRecording();
+            }
+        }
+
+        async function startRecording() {
+            try {
+                // Request microphone permission
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    audio: {
+                        echoCancellation: true,
+                        noiseSuppression: true,
+                        sampleRate: 44100
+                    } 
+                });
+
+                // Clear previous results
+                resultContainer.classList.remove('show');
+                errorDiv.classList.remove('show');
+                audioChunks = [];
+
+                // Create media recorder
+                const options = { mimeType: 'audio/webm' };
+                mediaRecorder = new MediaRecorder(stream, options);
+
+                mediaRecorder.ondataavailable = (event) => {
+                    if (event.data.size > 0) {
+                        audioChunks.push(event.data);
+                    }
+                };
+
+                mediaRecorder.onstop = async () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    await sendAudioToAPI(audioBlob);
+                    
+                    // Stop all tracks
+                    stream.getTracks().forEach(track => track.stop());
+                };
+
+                // Start recording
+                mediaRecorder.start();
+                isRecording = true;
+                recordingStartTime = Date.now();
+
+                // Update UI
+                micButton.classList.add('recording');
+                micButton.textContent = '⏹️';
+                statusDiv.textContent = 'Recording...';
+                statusDiv.classList.add('recording');
+
+                // Start timer
+                startTimer();
+
+                // Auto-stop after MAX_RECORDING_TIME seconds
+                setTimeout(() => {
+                    if (isRecording) {
+                        stopRecording();
+                    }
+                }, MAX_RECORDING_TIME * 1000);
+
+            } catch (error) {
+                console.error('Error accessing microphone:', error);
+                showError('Could not access microphone. Please grant permission and try again.');
+            }
+        }
+
+        function stopRecording() {
+            if (mediaRecorder && isRecording) {
+                mediaRecorder.stop();
+                isRecording = false;
+
+                // Update UI
+                micButton.classList.remove('recording');
+                micButton.textContent = '🎤';
+                statusDiv.textContent = 'Processing...';
+                statusDiv.classList.remove('recording');
+
+                // Stop timer
+                clearInterval(timerInterval);
+                timerDiv.textContent = '';
+            }
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - recordingStartTime) / 1000);
+                const remaining = MAX_RECORDING_TIME - elapsed;
+                timerDiv.textContent = `${remaining}s`;
+
+                if (remaining <= 0) {
+                    clearInterval(timerInterval);
+                }
+            }, 1000);
+        }
+
+        async function sendAudioToAPI(audioBlob) {
+            try {
+                loadingDiv.classList.add('show');
+                statusDiv.textContent = 'Analyzing audio...';
+
+                // Convert blob to base64
+                const base64Audio = await blobToBase64(audioBlob);
+
+                // Calculate duration
+                const duration = Math.floor((Date.now() - recordingStartTime) / 1000);
+
+                // Prepare request
+                const requestData = {
+                    audioData: base64Audio,
+                    audioFormat: 'audio/webm',
+                    durationSeconds: duration,
+                    recordedAt: new Date().toISOString()
+                };
+
+                // Send to API
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData)
+                });
+
+                const result = await response.json();
+
+                loadingDiv.classList.remove('show');
+
+                if (response.ok && result.success) {
+                    displayResult(result.data);
+                    statusDiv.textContent = 'Recognition complete!';
+                } else {
+                    throw new Error(result.message || 'Recognition failed');
+                }
+
+            } catch (error) {
+                console.error('Error sending audio to API:', error);
+                loadingDiv.classList.remove('show');
+                showError(`Error: ${error.message}`);
+                statusDiv.textContent = 'Ready to record';
+            }
+        }
+
+        function blobToBase64(blob) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    resolve(reader.result);
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(blob);
+            });
+        }
+
+        function displayResult(data) {
+            if (!data.isSuccessful || !data.track) {
+                showError('Could not identify the song. Please try again with clearer audio.');
+                return;
+            }
+
+            const track = data.track;
+            const confidence = Math.round(data.confidenceScore * 100);
+
+            let html = `
+                <div class="result-item">
+                    <span class="result-label">Song Title:</span>
+                    <span class="result-value">${track.title}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Artist:</span>
+                    <span class="result-value">${track.artist}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Album:</span>
+                    <span class="result-value">${track.album}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Genre:</span>
+                    <span class="result-value">${track.genre}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Release Year:</span>
+                    <span class="result-value">${track.releaseYear}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Duration:</span>
+                    <span class="result-value">${track.duration}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Confidence:</span>
+                    <div class="confidence-bar">
+                        <div class="confidence-fill" style="width: ${confidence}%">
+                            ${confidence}%
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            if (track.albumArtUrl) {
+                html = `<img src="${track.albumArtUrl}" alt="Album Art" class="album-art">` + html;
+            }
+
+            resultContent.innerHTML = html;
+            resultContainer.classList.add('show');
+        }
+
+        function showError(message) {
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+            statusDiv.textContent = 'Ready to record';
+
+            setTimeout(() => {
+                errorDiv.classList.remove('show');
+            }, 5000);
+        }
+
+        // Check browser support
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            showError('Your browser does not support audio recording. Please use Chrome, Firefox, or Edge.');
+            micButton.disabled = true;
+        }
+    </script>
+</body>
+</html>
