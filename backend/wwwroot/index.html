@@ -303,8 +303,9 @@
         const resultContent = document.getElementById('resultContent');
 
         // API endpoint - update this to match your API URL
-        const API_URL = 'https://localhost:7001/api/musicrecognition/recognize/microphone';
+        const API_URL = 'http://localhost:5273/api/MusicRecognition/recognize/microphone';
 
+    
         micButton.addEventListener('click', toggleRecording);
 
         async function toggleRecording() {
