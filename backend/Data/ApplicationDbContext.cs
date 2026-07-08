@@ -12,7 +12,7 @@ namespace backend.Data
 
         // Existing DbSets
         public DbSet<Movie> Movies { get; set; } = null!;
-        public DbSet<Scene> Scenes { get; set; } = null!;
+        
         public DbSet<MusicTrack> MusicTracks { get; set; } = null!;
         public DbSet<RecognitionHistory> RecognitionHistories { get; set; } = null!;
 
@@ -126,25 +126,10 @@ namespace backend.Data
                 entity.HasIndex(e => e.ImdbId)
                     .HasDatabaseName("IX_Movies_ImdbId");
                 
-                entity.HasMany(e => e.Scenes)
-                      .WithOne(e => e.Movie)
-                      .HasForeignKey(e => e.MovieId)
-                      .OnDelete(DeleteBehavior.Cascade);
+                
             });
 
-            // Scene configuration
-            modelBuilder.Entity<Scene>(entity =>
-            {
-                entity.ToTable("Scenes");
-                entity.HasKey(e => e.Id);
-                
-                entity.Property(e => e.Description)
-                    .IsRequired()
-                    .HasMaxLength(500);
-                
-                entity.HasIndex(e => e.MovieId)
-                    .HasDatabaseName("IX_Scenes_MovieId");
-            });
+            
 
             // MusicTrack configuration
             modelBuilder.Entity<MusicTrack>(entity =>

@@ -8,6 +8,15 @@ export interface MovieRecognitionRequest {
 }
 
 export interface MovieRecognitionResponse {
+    recognitionId: string;
+    isSuccessful: boolean;
+    confidenceScore: number;
+    movie?: Movie;
+    recognizedAt: string;
+    message: string;
+}
+
+export interface Movie{
   id: string;
   title: string;
   poster: string;
@@ -19,7 +28,10 @@ export interface MovieRecognitionResponse {
   confidence: number;
   trailerUrl?: string;
   recognitionDate: string;
+  ImdbId : string;
+  rating: number;
 }
+
 
 // Backend API Response wrapper
 interface ApiResponse<T> {
@@ -35,23 +47,21 @@ const movieService = {
    * Recognize movie from video file
    */
   recognizeMovie: async (
-    videoFile: File, 
-    startTimeSeconds?: number,
-    endTimeSeconds?: number,
+    request: MovieRecognitionRequest,
     onUploadProgress?: (progressEvent: any) => void
   ): Promise<MovieRecognitionResponse> => {
     const formData = new FormData();
-    formData.append('File', videoFile);  // Changed from 'video' to 'File'
-    
-    if (startTimeSeconds !== undefined) {
-      formData.append('StartTimeSeconds', startTimeSeconds.toString());
+    formData.append('File', request.file);
+
+    if (request.startTimeSeconds !== undefined) {
+      formData.append('StartTimeSeconds', request.startTimeSeconds.toString());
     }
-    if (endTimeSeconds !== undefined) {
-      formData.append('EndTimeSeconds', endTimeSeconds.toString());
+    if (request.endTimeSeconds !== undefined) {
+      formData.append('EndTimeSeconds', request.endTimeSeconds.toString());
     }
 
     const response = await api.post<ApiResponse<MovieRecognitionResponse>>(
-      '/api/MovieRecognition/recognize/video',  // Corrected endpoint
+      '/MovieRecognition/recognize/video',  // Corrected endpoint
       formData,
       {
         headers: {
@@ -62,6 +72,7 @@ const movieService = {
     );
 
     return response.data.data;  // Extract data from ApiResponse wrapper
+    
   },
 
   /**
@@ -75,7 +86,7 @@ const movieService = {
     formData.append('File', imageFile);
 
     const response = await api.post<ApiResponse<MovieRecognitionResponse>>(
-      '/api/MovieRecognition/recognize/image',
+      '/MovieRecognition/recognize/image',
       formData,
       {
         headers: {
@@ -93,7 +104,7 @@ const movieService = {
    */
   getRecognitionResult: async (recognitionId: string): Promise<MovieRecognitionResponse> => {
     const response = await api.get<ApiResponse<MovieRecognitionResponse>>(
-      `/api/MovieRecognition/result/${recognitionId}`
+      `MovieRecognition/result/${recognitionId}`
     );
     return response.data.data;
   },
@@ -103,7 +114,7 @@ const movieService = {
    */
   getRecognitionHistory: async (pageNumber: number = 1, pageSize: number = 10) => {
     const response = await api.get<ApiResponse<any>>(
-      `/api/MovieRecognition/history?pageNumber=${pageNumber}&pageSize=${pageSize}`
+      `MovieRecognition/history?pageNumber=${pageNumber}&pageSize=${pageSize}`
     );
     return response.data.data;
   },

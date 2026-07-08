@@ -24,8 +24,8 @@ const MovieResultCard: React.FC<MovieResultCardProps> = ({ movie, onPlayTrailer 
         {/* Poster */}
         <div className="col-md-4">
           <img
-            src={movie.poster || '/placeholder-movie.png'}
-            alt={movie.title}
+            src={movie.movie?.poster || '/placeholder-movie.png'}
+            alt={movie.movie?.title}
             className="img-fluid rounded-start h-100 object-fit-cover"
             style={{ minHeight: '400px' }}
           />
@@ -36,9 +36,9 @@ const MovieResultCard: React.FC<MovieResultCardProps> = ({ movie, onPlayTrailer 
           <div className="card-body">
             {/* Title and Confidence */}
             <div className="d-flex justify-content-between align-items-start mb-3">
-              <h3 className="card-title mb-0">{movie.title}</h3>
-              <span className={`badge bg-${getConfidenceColor(movie.confidence)} fs-6`}>
-                {movie.confidence}% Match
+              <h3 className="card-title mb-0">{movie.movie?.title}</h3>
+              <span className={`badge bg-${getConfidenceColor(movie.confidenceScore)} fs-6`}>
+                {movie.confidenceScore}% Match
               </span>
             </div>
 
@@ -47,30 +47,30 @@ const MovieResultCard: React.FC<MovieResultCardProps> = ({ movie, onPlayTrailer 
               <div className="d-flex flex-wrap gap-3 text-muted">
                 <span>
                   <FaCalendar className="me-1" />
-                  {movie.year}
+                  {movie.movie?.year}
                 </span>
                 <span>
                   <FaFilm className="me-1" />
-                  {movie.genre.join(', ')}
+                  {movie.movie?.genre.join(', ')}
                 </span>
               </div>
             </div>
 
             {/* Director */}
             <div className="mb-2">
-              <strong>Director:</strong> {movie.director}
+              <strong>Director:</strong> {movie.movie?.director}
             </div>
 
             {/* Cast */}
             <div className="mb-3">
               <strong>Cast:</strong>{' '}
-              <span className="text-muted">{movie.cast.join(', ')}</span>
+              <span className="text-muted">{movie.movie?.cast.join(', ')}</span>
             </div>
 
             {/* Synopsis */}
             <div className="mb-3">
               <strong>Synopsis:</strong>
-              <p className="text-muted mt-2">{movie.synopsis}</p>
+              <p className="text-muted mt-2">{movie.movie?.synopsis}</p>
             </div>
 
             {/* Rating placeholder */}
@@ -85,7 +85,7 @@ const MovieResultCard: React.FC<MovieResultCardProps> = ({ movie, onPlayTrailer 
 
             {/* Actions */}
             <div className="mt-4">
-              {movie.trailerUrl && (
+              {movie.movie?.trailerUrl && (
                 <button
                   className="btn btn-primary me-2"
                   onClick={onPlayTrailer}

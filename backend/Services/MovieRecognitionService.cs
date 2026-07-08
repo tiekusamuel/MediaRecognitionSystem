@@ -200,24 +200,18 @@ namespace backend.Services
                 {
                     Id = Guid.NewGuid(),
                     Title = "The Shawshank Redemption",
-                    Director = "Frank Darabont",
+                    Poster = "https://example.com/posters/shawshank.jpg",
+                    Genre = ["Drama"],
                     ReleaseYear = 1994,
-                    Genre = "Drama",
+                    Director = "Frank Darabont",
+                    Cast = ["Nba Twothings"],
                     Duration = "2h 22m",
-                    PosterUrl = "https://example.com/posters/shawshank.jpg",
+                    Synopsis="This movie is about yahoo boys.",
+                    TrailerUrl="https://example.com/posters/shawshank.jpg",
                     ImdbId = "tt0111161",
                     Rating = 9.3
                 },
-                Scene = new SceneDto
-                {
-                    Id = Guid.NewGuid(),
-                    Description = "Andy Dufresne arrives at Shawshank Prison",
-                    StartTimestamp = "00:05:23",
-                    EndTimestamp = "00:08:45",
-                    Characters = "Andy Dufresne, Prison Guards",
-                    Location = "Shawshank Prison - Main Gate",
-                    ThumbnailUrl = "https://example.com/scenes/shawshank_001.jpg"
-                },
+               
                 RecognizedAt = DateTime.UtcNow,
                 Message = "Movie scene recognized successfully"
             };

@@ -39,7 +39,7 @@ namespace backend.Migrations
                     b.Property<TimeSpan>("Duration")
                         .HasColumnType("time");
 
-                    b.Property<string>("Genre")
+                    b.PrimitiveCollection<string>("Genre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -227,49 +227,6 @@ namespace backend.Migrations
                     b.ToTable("RecognitionHistories", (string)null);
                 });
 
-            modelBuilder.Entity("backend.Models.Scene", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Characters")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<TimeSpan>("EndTimestamp")
-                        .HasColumnType("time");
-
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("MovieId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<TimeSpan>("StartTimestamp")
-                        .HasColumnType("time");
-
-                    b.Property<string>("ThumbnailUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MovieId")
-                        .HasDatabaseName("IX_Scenes_MovieId");
-
-                    b.ToTable("Scenes", (string)null);
-                });
-
             modelBuilder.Entity("backend.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -326,22 +283,6 @@ namespace backend.Migrations
                         .HasConstraintName("FK_Recognitions_Users");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("backend.Models.Scene", b =>
-                {
-                    b.HasOne("backend.Models.Movie", "Movie")
-                        .WithMany("Scenes")
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Movie");
-                });
-
-            modelBuilder.Entity("backend.Models.Movie", b =>
-                {
-                    b.Navigation("Scenes");
                 });
 
             modelBuilder.Entity("backend.Models.User", b =>

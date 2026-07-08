@@ -73,7 +73,8 @@ const MusicRecognition: React.FC = () => {
       
       const response = await musicService.recognizeMusic(
         audioFile,
-        (progressEvent) => {
+        undefined,
+        (progressEvent: any) => {
           const progress = Math.round((progressEvent.loaded * 100) / (progressEvent.total || progressEvent.loaded));
           setUploadProgress(progress);
         }
@@ -106,7 +107,8 @@ const MusicRecognition: React.FC = () => {
     try {
       const response = await musicService.recognizeMusic(
         selectedFile,
-        (progressEvent) => {
+        undefined,
+        (progressEvent: any) => {
           const progress = Math.round((progressEvent.loaded * 100) / (progressEvent.total || progressEvent.loaded));
           setUploadProgress(progress);
         }

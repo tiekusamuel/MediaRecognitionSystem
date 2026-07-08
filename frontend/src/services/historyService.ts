@@ -64,7 +64,7 @@ const historyService = {
     }
 
     const response = await api.get<ApiResponse<HistoryResponse>>(
-      `/api/History?${params.toString()}`
+      `History?${params.toString()}`
     );
     return response.data.data;
   },
@@ -74,7 +74,7 @@ const historyService = {
    */
   getHistoryItem: async (id: string): Promise<HistoryItem> => {
     const response = await api.get<ApiResponse<HistoryItem>>(
-      `/api/History/${id}`
+      `History/${id}`
     );
     return response.data.data;
   },
@@ -83,21 +83,21 @@ const historyService = {
    * Delete history item
    */
   deleteHistoryItem: async (id: string): Promise<void> => {
-    await api.delete(`/api/History/${id}`);
+    await api.delete(`History/${id}`);
   },
 
   /**
    * Delete multiple history items
    */
   deleteMultipleItems: async (ids: string[]): Promise<void> => {
-    await api.post('/api/History/delete-multiple', { ids });
+    await api.post('History/delete-multiple', { ids });
   },
 
   /**
    * Clear all history
    */
   clearHistory: async (): Promise<void> => {
-    await api.delete('/api/History/clear');
+    await api.delete('History/clear');
   },
 };
 

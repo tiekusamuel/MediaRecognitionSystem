@@ -17,21 +17,18 @@ namespace backend.Repositories
         public async Task<Movie?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _context.Movies
-                .Include(m => m.Scenes)
                 .FirstOrDefaultAsync(m => m.Id == id, cancellationToken);
         }
 
         public async Task<Movie?> GetByImdbIdAsync(string imdbId, CancellationToken cancellationToken = default)
         {
             return await _context.Movies
-                .Include(m => m.Scenes)
                 .FirstOrDefaultAsync(m => m.ImdbId == imdbId, cancellationToken);
         }
 
         public async Task<IEnumerable<Movie>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             return await _context.Movies
-                .Include(m => m.Scenes)
                 .ToListAsync(cancellationToken);
         }
 

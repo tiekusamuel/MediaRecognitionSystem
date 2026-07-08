@@ -4,13 +4,15 @@ import UploadBox from '../components/UploadBox';
 import MovieResultCard from '../components/MovieResultCard';
 import LoadingSpinner from '../components/LoadingSpinner';
 import movieService from '../services/movieService';
-import type { MovieRecognitionResponse } from '../services/movieService';
+import type { MovieRecognitionRequest, MovieRecognitionResponse } from '../services/movieService';
 
 /**
  * Movie recognition page
  */
 const MovieRecognition: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
   const [result, setResult] = useState<MovieRecognitionResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -27,25 +29,43 @@ const MovieRecognition: React.FC = () => {
       setError('Please select a video file first');
       return;
     }
+  
 
     setLoading(true);
     setError(null);
     setUploadProgress(0);
 
+    const request : MovieRecognitionRequest = {
+      file: selectedFile,
+      startTimeSeconds:
+           startTime === ""
+               ? undefined
+               : Number(startTime),
+      endTimeSeconds:
+           endTime === "" 
+              ? undefined
+              : Number(endTime),
+    };
+      
+  
     try {
       const response = await movieService.recognizeMovie(
-        selectedFile,
-        (progressEvent) => {
-          const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+        request,
+        (progressEvent: any) => {
+          const total = progressEvent?.total ?? 0;
+          const loaded = progressEvent?.loaded ?? 0;
+          const progress = total ? Math.round((loaded * 100) / total) : 0;
           setUploadProgress(progress);
         }
       );
+  
       setResult(response);
+      console.log(response);
     } catch (err: any) {
       console.error('Movie recognition failed:', err);
       setError(
-        err.response?.data?.message || 
-        'Failed to recognize movie. Please try again.'
+        err.response?.data?.message ||
+          'Failed to recognize movie. Please try again.'
       );
     } finally {
       setLoading(false);
@@ -54,8 +74,8 @@ const MovieRecognition: React.FC = () => {
   };
 
   const handlePlayTrailer = () => {
-    if (result?.trailerUrl) {
-      window.open(result.trailerUrl, '_blank');
+    if (result?.movie?.trailerUrl) {
+      window.open(result.movie?.trailerUrl, '_blank');
     }
   };
 

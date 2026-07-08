@@ -6,7 +6,7 @@ namespace backend.Models
         public string Title { get; set; } = string.Empty;
         public string Director { get; set; } = string.Empty;
         public int ReleaseYear { get; set; }
-        public string Genre { get; set; } = string.Empty;
+        public List<string> Genre { get; set; } = new();
         public TimeSpan Duration { get; set; }
         public string PosterUrl { get; set; } = string.Empty;
         public string ImdbId { get; set; } = string.Empty;
@@ -14,7 +14,6 @@ namespace backend.Models
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; }
 
-        // Navigation property
-        public ICollection<Scene> Scenes { get; set; } = new List<Scene>();
+        
     }
 }

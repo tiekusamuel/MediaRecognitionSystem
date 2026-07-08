@@ -169,7 +169,7 @@ namespace backend.Services
                         Id = movieResult.RecognitionId,
                         Type = "movie",
                         Title = movieResult.Movie?.Title ?? movieResult.Message,
-                        Thumbnail = movieResult.Movie?.PosterUrl ?? string.Empty,
+                        Thumbnail = movieResult.Movie?.Poster ?? string.Empty,
                         Confidence = movieResult.ConfidenceScore,
                         RecognitionDate = movieResult.RecognizedAt,
                         Details = movieResult

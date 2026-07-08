@@ -72,7 +72,7 @@ const musicService = {
     }
 
     const response = await api.post<ApiResponse<MusicRecognitionResponse>>(
-      '/api/MusicRecognition/recognize/file',  // Corrected endpoint
+      'MusicRecognition/recognize/file',  // Corrected endpoint
       formData,
       {
         headers: {
@@ -100,7 +100,7 @@ const musicService = {
     };
 
     const response = await api.post<ApiResponse<MusicRecognitionResponse>>(
-      '/api/MusicRecognition/recognize/microphone',
+      'MusicRecognition/recognize/microphone',
       requestBody,
       {
         headers: {
@@ -150,7 +150,7 @@ const musicService = {
    */
   getRecognitionResult: async (recognitionId: string): Promise<MusicRecognitionResponse> => {
     const response = await api.get<ApiResponse<MusicRecognitionResponse>>(
-      `/api/MusicRecognition/result/${recognitionId}`
+      `MusicRecognition/result/${recognitionId}`
     );
     return response.data.data;
   },
@@ -163,7 +163,7 @@ const musicService = {
     pageSize: number = 10
   ): Promise<RecognitionHistoryResponse> => {
     const response = await api.get<ApiResponse<RecognitionHistoryResponse>>(
-      `/api/MusicRecognition/history`,
+      `MusicRecognition/history`,
       {
         params: {
           pageNumber,
