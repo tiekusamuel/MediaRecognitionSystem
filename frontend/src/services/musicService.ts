@@ -52,6 +52,7 @@ interface ApiResponse<T> {
   data: T;
   message: string;
   errors: string[];
+  timestamp: string;
 }
 
 // Music service functions

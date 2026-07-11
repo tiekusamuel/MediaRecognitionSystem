@@ -10,13 +10,15 @@ namespace backend.Services
     {
         private readonly ILogger<MusicRecognitionService> _logger;
         private readonly IRecognitionHistoryRepository _historyRepository;
-
+        private readonly IAIServiceClient _aiServiceClient;
         public MusicRecognitionService(
             ILogger<MusicRecognitionService> logger,
-            IRecognitionHistoryRepository historyRepository)
+            IRecognitionHistoryRepository historyRepository,
+            IAIServiceClient aIServiceClient)
         {
             _logger = logger;
             _historyRepository = historyRepository;
+            _aiServiceClient = aIServiceClient;
         }
 
         public async Task<MusicRecognitionResultDto> RecognizeFromAudioAsync(
@@ -29,12 +31,16 @@ namespace backend.Services
             {
                 _logger.LogInformation("Starting audio recognition for file: {FileName}", fileName);
 
-                // Simulate audio processing
-                await Task.Delay(1800, cancellationToken);
+                var result = await _aiServiceClient.RecognizeMusicAsync(
+                    audioStream,
+                    fileName,
+                    cancellationToken
+                );
 
-                // Simulate recognition logic
-                var result = SimulateMusicRecognition();
-
+                result.RecognitionId = Guid.NewGuid();
+                result.RecognizedAt = DateTime.UtcNow;
+               
+               
                 // Save to history
                 await SaveRecognitionHistoryAsync(
                     fileName,
@@ -45,6 +51,8 @@ namespace backend.Services
                 _logger.LogInformation(
                     "Audio recognition completed. Recognition ID: {RecognitionId}",
                     result.RecognitionId);
+                
+                
 
                 return result;
             }

@@ -152,6 +152,17 @@ builder.Services.AddResponseCompression(options =>
     options.EnableForHttps = true;
 });
 
+// HttpClient
+builder.Services.AddHttpClient<IAIServiceClient, AIServiceClient>(client =>
+{
+    client.BaseAddress = new Uri(
+        builder.Configuration["AIService:BaseUrl"]!
+    );
+
+    client.Timeout = TimeSpan.FromMinutes(2);
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
