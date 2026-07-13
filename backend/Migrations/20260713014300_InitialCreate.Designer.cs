@@ -12,8 +12,8 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260708095457_RemoveSceneEntity")]
-    partial class RemoveSceneEntity
+    [Migration("20260713014300_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -127,6 +127,10 @@ namespace backend.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("thumbnail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Isrc")
@@ -218,6 +222,10 @@ namespace backend.Migrations
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
+
+                    b.Property<string>("thumbnail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

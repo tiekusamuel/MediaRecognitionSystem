@@ -16,5 +16,7 @@ namespace backend.Models
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? CompletedAt { get; set; }
         public string? ErrorMessage { get; set; }
+        public string thumbnail { get; set; } = string.Empty;
+
     }
 }

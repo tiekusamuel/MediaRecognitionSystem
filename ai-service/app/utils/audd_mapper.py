@@ -23,13 +23,13 @@ class AudDMapper:
 
         artwork = apple.get("artwork", {})
 
-        previews = apple.get("previews", [])
 
         genre_names = apple.get("genreNames", [])
 
         release_year = 0
 
         release_date = result.get("release_date")
+        
 
         if release_date:
             try:
@@ -42,10 +42,12 @@ class AudDMapper:
         if album_art:
             album_art = album_art.replace("{w}", "1000").replace("{h}", "1000")
 
-        preview_url = ""
+       
 
-        if previews:
-            preview_url = previews[0].get("url", "")
+        
+        
+        
+        
 
         return MusicRecognitionResponse(
 
@@ -72,8 +74,19 @@ class AudDMapper:
 
                 isrc=apple.get("isrc", ""),
 
-                albumarturl=album_art,
+                albumArturl=album_art,
 
-                previewurl=preview_url
+                previewUrl=result.get("spotify",{}).get("preview_url",""),
+                
+                spotifyUrl = result.get("spotify",{}).get("external_urls",{}).get("spotify"),
+                
+                appleMusicUrl= result.get("apple_music",{}).get("url",""),
+                
+                songLink = result.get("song_link", " "),
+                
+                thumbnail = result["spotify"]["album"]["images"][0]["url"]
+                
+                
+                
             )
         )

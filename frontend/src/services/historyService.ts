@@ -5,11 +5,13 @@ export interface HistoryItem {
   id: string;
   type: 'movie' | 'music';
   title: string;
-  thumbnail: string;
+  AlbumArtUrl: string;
   confidence: number;
   recognitionDate: string;
   details?: any;
+  thumbnail : string;
 }
+
 
 export interface HistoryResponse {
   items: HistoryItem[];

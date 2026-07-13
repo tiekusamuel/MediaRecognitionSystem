@@ -124,6 +124,10 @@ namespace backend.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("thumbnail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Isrc")
@@ -215,6 +219,10 @@ namespace backend.Migrations
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
+
+                    b.Property<string>("thumbnail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

@@ -1,6 +1,7 @@
 import React from 'react';
-import { FaMusic, FaSpotify, FaApple, FaYoutube, FaClock } from 'react-icons/fa';
+import { FaMusic, FaSpotify, FaApple, FaClock } from 'react-icons/fa';
 import type { MusicRecognitionResponse } from '../services/musicService';
+import { useRef, useState } from "react";
 
 interface MusicResultCardProps {
   music: MusicRecognitionResponse;
@@ -16,11 +17,76 @@ const MusicResultCard: React.FC<MusicResultCardProps> = ({ music }) => {
     return 'danger';
   };
 
-  const formatDuration = (seconds: number): string => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
-  };
+const audioRef = useRef<HTMLAudioElement>(null);
+
+const [isPlaying, setIsPlaying] = useState(false);
+const [currentTime, setCurrentTime] = useState(0);
+const [duration, setDuration] = useState(0);
+const [isLoading, setIsLoading] = useState(false);
+const [previewError, setPreviewError] = useState(false);
+
+
+const togglePreview = async () => {
+  if (!audioRef.current) return;
+
+  try {
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+      return;
+    }
+
+    setIsLoading(true);
+    await audioRef.current.play();
+
+    setIsPlaying(true);
+    setPreviewError(false);
+  } catch (err) {
+    console.error(err);
+    setPreviewError(true);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+const onLoadedMetadata = () => {
+  if (audioRef.current) {
+    setDuration(audioRef.current.duration);
+  }
+};
+
+const onTimeUpdate = () => {
+  if (audioRef.current) {
+    setCurrentTime(audioRef.current.currentTime);
+  }
+};
+
+const onEnded = () => {
+  setIsPlaying(false);
+  setCurrentTime(0);
+
+  if (audioRef.current) {
+    audioRef.current.currentTime = 0;
+  }
+};
+
+const onError = () => {
+  setPreviewError(true);
+  setIsPlaying(false);
+  setIsLoading(false);
+};
+
+const formatTime = (seconds: number) => {
+  if (!seconds || isNaN(seconds)) return "0:00";
+
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+
+  return `${mins}:${secs.toString().padStart(2, "0")}`;
+};
+
+
+
 
   return (
     <div className="card shadow-lg">
@@ -28,8 +94,8 @@ const MusicResultCard: React.FC<MusicResultCardProps> = ({ music }) => {
         {/* Album Art */}
         <div className="col-md-4">
           <img
-            src={music.albumArt || '/placeholder-music.png'}
-            alt={music.album}
+            src={music.track.albumArtUrl || '/placeholder-music.png'}
+            alt={music.track.album}
             className="img-fluid rounded-start h-100 object-fit-cover"
             style={{ minHeight: '350px' }}
           />
@@ -41,11 +107,11 @@ const MusicResultCard: React.FC<MusicResultCardProps> = ({ music }) => {
             {/* Title and Confidence */}
             <div className="d-flex justify-content-between align-items-start mb-3">
               <div>
-                <h3 className="card-title mb-1">{music.title}</h3>
-                <h5 className="text-muted">{music.artist}</h5>
+                <h3 className="card-title mb-1">{music.track.title}</h3>
+                <h5 className="text-muted">{music.track.artist}</h5>
               </div>
-              <span className={`badge bg-${getConfidenceColor(music.confidence)} fs-6`}>
-                {music.confidence}% Match
+              <span className={`badge bg-${getConfidenceColor(music.confidenceScore)} fs-6`}>
+                {music.confidenceScore}% Match
               </span>
             </div>
 
@@ -54,11 +120,11 @@ const MusicResultCard: React.FC<MusicResultCardProps> = ({ music }) => {
               <div className="d-flex align-items-center gap-3 text-muted">
                 <span>
                   <FaMusic className="me-1" />
-                  {music.album}
+                  {music.track.album}
                 </span>
                 <span>
                   <FaClock className="me-1" />
-                  {formatDuration(music.duration)}
+                  {music.track.duration}
                 </span>
               </div>
             </div>
@@ -67,22 +133,22 @@ const MusicResultCard: React.FC<MusicResultCardProps> = ({ music }) => {
             <div className="row mb-3">
               <div className="col-6">
                 <strong>Genre:</strong>
-                <div className="text-muted">{music.genre}</div>
+                <div className="text-muted">{music.track.genre}</div>
               </div>
               <div className="col-6">
                 <strong>Release Year:</strong>
-                <div className="text-muted">{music.releaseYear}</div>
+                <div className="text-muted">{music.track.releaseYear}</div>
               </div>
             </div>
 
             {/* Streaming Links */}
-            {music.streamingLinks && (
+            {music.track.spotifyUrl && (
               <div className="mb-4">
                 <strong className="d-block mb-2">Listen on:</strong>
                 <div className="d-flex gap-2 flex-wrap">
-                  {music.streamingLinks.spotify && (
+                  {music.track.spotifyUrl && (
                     <a
-                      href={music.streamingLinks.spotify}
+                      href={music.track.spotifyUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="btn btn-success"
@@ -91,9 +157,9 @@ const MusicResultCard: React.FC<MusicResultCardProps> = ({ music }) => {
                       Spotify
                     </a>
                   )}
-                  {music.streamingLinks.appleMusic && (
+                  {music.track.appleMusicUrl && (
                     <a
-                      href={music.streamingLinks.appleMusic}
+                      href={music.track.appleMusicUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="btn btn-dark"
@@ -102,27 +168,70 @@ const MusicResultCard: React.FC<MusicResultCardProps> = ({ music }) => {
                       Apple Music
                     </a>
                   )}
-                  {music.streamingLinks.youtube && (
-                    <a
-                      href={music.streamingLinks.youtube}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn btn-danger"
-                    >
-                      <FaYoutube className="me-2" />
-                      YouTube
-                    </a>
-                  )}
+                  
                 </div>
               </div>
             )}
 
             {/* Audio Player Placeholder */}
             <div className="bg-light p-3 rounded">
-              <div className="d-flex align-items-center justify-content-between">
-                <span className="text-muted small">Audio preview not available</span>
-                <button className="btn btn-sm btn-primary">Play Sample</button>
-              </div>
+
+                {music?.track?.previewUrl ? (
+                    <>
+                        <audio
+                            ref={audioRef}
+                            src={music.track.previewUrl}
+                            onLoadedMetadata={onLoadedMetadata}
+                            onTimeUpdate={onTimeUpdate}
+                            onEnded={onEnded}
+                            onError={onError}
+                        />
+
+                        <div className="d-flex justify-content-between align-items-center mb-2">
+
+                            <button
+                                className="btn btn-primary"
+                                onClick={togglePreview}
+                                disabled={isLoading}
+                            >
+                                {isLoading
+                                    ? "Loading..."
+                                    : isPlaying
+                                    ? "⏸ Pause Sample"
+                                    : "▶ Play Sample"}
+                            </button>
+
+                            <span className="small text-muted">
+                                {formatTime(currentTime)} / {formatTime(duration)}
+                            </span>
+
+                        </div>
+
+                        <div className="progress" style={{ height: "8px" }}>
+                            <div
+                                className="progress-bar"
+                                role="progressbar"
+                                style={{
+                                    width:
+                                        duration > 0
+                                            ? `${(currentTime / duration) * 100}%`
+                                            : "0%",
+                                }}
+                            />
+                        </div>
+
+                        {previewError && (
+                            <div className="text-danger mt-2">
+                                Unable to play preview.
+                            </div>
+                        )}
+                    </>
+                ) : (
+                    <div className="text-muted">
+                        Audio preview not available.
+                    </div>
+                )}
+
             </div>
           </div>
         </div>

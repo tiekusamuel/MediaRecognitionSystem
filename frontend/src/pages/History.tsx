@@ -33,6 +33,7 @@ const History: React.FC = () => {
       setHistory(response.items);
       setTotalPages(response.totalPages);
       setTotalCount(response.totalCount);
+      console.log(response.items);
     } catch (error) {
       console.error('Failed to load history:', error);
     } finally {
@@ -169,6 +170,7 @@ const History: React.FC = () => {
                 onDelete={handleDelete}
                 onView={handleView}
               />
+              
             ))}
           </div>
 

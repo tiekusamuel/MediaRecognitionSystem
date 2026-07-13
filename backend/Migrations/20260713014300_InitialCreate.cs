@@ -47,7 +47,8 @@ namespace backend.Migrations
                     AlbumArtUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PreviewUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    thumbnail = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -69,7 +70,8 @@ namespace backend.Migrations
                     Status = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CompletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ErrorMessage = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    ErrorMessage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    thumbnail = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -90,31 +92,6 @@ namespace backend.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Scenes",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    MovieId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    StartTimestamp = table.Column<TimeSpan>(type: "time", nullable: false),
-                    EndTimestamp = table.Column<TimeSpan>(type: "time", nullable: false),
-                    Characters = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ThumbnailUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Scenes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Scenes_Movies_MovieId",
-                        column: x => x.MovieId,
-                        principalTable: "Movies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -179,11 +156,6 @@ namespace backend.Migrations
                 columns: new[] { "UserId", "Type" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Scenes_MovieId",
-                table: "Scenes",
-                column: "MovieId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",
                 table: "Users",
                 column: "Email",
@@ -200,6 +172,9 @@ namespace backend.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Movies");
+
+            migrationBuilder.DropTable(
                 name: "MusicTracks");
 
             migrationBuilder.DropTable(
@@ -209,13 +184,7 @@ namespace backend.Migrations
                 name: "Recognitions");
 
             migrationBuilder.DropTable(
-                name: "Scenes");
-
-            migrationBuilder.DropTable(
                 name: "Users");
-
-            migrationBuilder.DropTable(
-                name: "Movies");
         }
     }
 }

@@ -50,7 +50,8 @@ namespace backend.Controllers
 
                 // Validate audio format
                 var allowedFormats = new[] { "audio/webm", "audio/wav", "audio/mp3", "audio/ogg", "audio/mpeg" };
-                if (!allowedFormats.Contains(request.AudioFormat.ToLower()))
+                var audioFormat = request.AudioFormat.ToLower();
+                if (!allowedFormats.Any(format => audioFormat.StartsWith(format)))
                 {
                     return BadRequest(ApiResponse<object>.ErrorResponse(
                         $"Unsupported audio format. Allowed formats: {string.Join(", ", allowedFormats)}"));
@@ -170,6 +171,7 @@ namespace backend.Controllers
                     "An error occurred while processing your request"));
             }
         }
+
 
         /// <summary>
         /// Get a specific recognition result by ID

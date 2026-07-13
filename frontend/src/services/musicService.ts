@@ -12,22 +12,30 @@ export interface MicrophoneRecognitionRequest {
   durationSeconds?: number;
 }
 
-export interface MusicRecognitionResponse {
+export interface MusicRecognitionResponse{
+  recognitionId: string;
+  isSuccessful: boolean;
+  confidenceScore: number;
+  recognizedAt: string;
+  message: string;
+  track: MusicTrack;
+}
+export interface MusicTrack {
   id: string;
   title: string;
   artist: string;
   album: string;
-  albumArt: string;
+  albumArtUrl: string;
   genre: string;
   releaseYear: number;
   duration: number;
-  confidence: number;
-  streamingLinks?: {
-    spotify?: string;
-    appleMusic?: string;
-    youtube?: string;
-  };
-  recognitionDate: string;
+  isrc: string;
+  previewUrl: string;
+  spotifyUrl: string;
+  appleMusicUrl: string;
+  songLink: string;
+
+  
 }
 
 export interface RecognitionHistoryItem {

@@ -47,7 +47,7 @@ namespace backend.Services
                                 Id = m.Id,
                                 Type = "music",
                                 Title = string.IsNullOrWhiteSpace(m.Result) ? m.FileName : m.Result,
-                                Thumbnail = string.Empty,
+                                thumbnail = string.Empty,
                                 Confidence = m.ConfidenceScore,
                                 RecognitionDate = m.RecognizedAt,
                                 Details = m
@@ -79,7 +79,7 @@ namespace backend.Services
                                 Id = m.Id,
                                 Type = "movie",
                                 Title = string.IsNullOrWhiteSpace(m.Result) ? m.FileName : m.Result,
-                                Thumbnail = string.Empty,
+                                thumbnail = string.Empty,
                                 Confidence = m.ConfidenceScore,
                                 RecognitionDate = m.RecognizedAt,
                                 Details = m
@@ -140,7 +140,7 @@ namespace backend.Services
                         Id = musicResult.RecognitionId,
                         Type = "music",
                         Title = musicResult.Track?.Title ?? musicResult.Message,
-                        Thumbnail = musicResult.Track?.AlbumArtUrl ?? string.Empty,
+                        thumbnail = musicResult.Track?.thumbnail ?? string.Empty,
                         Confidence = musicResult.ConfidenceScore,
                         RecognitionDate = musicResult.RecognizedAt,
                         Details = musicResult
@@ -169,7 +169,7 @@ namespace backend.Services
                         Id = movieResult.RecognitionId,
                         Type = "movie",
                         Title = movieResult.Movie?.Title ?? movieResult.Message,
-                        Thumbnail = movieResult.Movie?.Poster ?? string.Empty,
+                        thumbnail = movieResult.Movie?.Poster ?? string.Empty,
                         Confidence = movieResult.ConfidenceScore,
                         RecognitionDate = movieResult.RecognizedAt,
                         Details = movieResult

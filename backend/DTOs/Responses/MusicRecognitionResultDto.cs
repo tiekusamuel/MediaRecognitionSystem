@@ -22,5 +22,14 @@ namespace backend.DTOs.Responses
         public string Isrc { get; set; } = string.Empty;
         public string AlbumArtUrl { get; set; } = string.Empty;
         public string PreviewUrl { get; set; } = string.Empty;
+
+        public string spotifyUrl {get; set;} = string.Empty;
+
+        public string appleMusicUrl {get; set;} = string.Empty;
+
+        public string songLink {get; set;} = string.Empty;
+
+        public string thumbnail {get; set;} = string.Empty;
+
     }
 }
