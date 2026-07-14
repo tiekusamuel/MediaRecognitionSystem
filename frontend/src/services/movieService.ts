@@ -75,6 +75,7 @@ const movieService = {
     
   },
 
+
   /**
    * Recognize movie from image file
    */
