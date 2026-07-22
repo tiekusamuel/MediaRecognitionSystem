@@ -162,6 +162,14 @@ builder.Services.AddHttpClient<IAIServiceClient, AIServiceClient>(client =>
     client.Timeout = TimeSpan.FromMinutes(2);
 });
 
+builder.Services.AddHttpClient<IMovieAIServiceClient, MovieAIServiceClient>(client =>
+{
+    client.BaseAddress = new Uri("http://127.0.0.1:8000/");
+    client.Timeout = TimeSpan.FromMinutes(5);
+});
+
+builder.Services.AddScoped<IMovieRecognitionService, MovieRecognitionService>();
+
 
 var app = builder.Build();
 

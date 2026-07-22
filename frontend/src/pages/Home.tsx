@@ -64,7 +64,7 @@ const Home: React.FC = () => {
   }
 
   return (
-    <div>
+    <div className=''>
       {/* Welcome Section */}
       <div className="mb-5">
         <h1 className="display-4 fw-bold mb-2">
@@ -76,10 +76,10 @@ const Home: React.FC = () => {
       </div>
 
       {/* Statistics Cards */}
-      <div className="row g-4 mb-5">
+      <div className="row g-4 mb-5 ">
         <div className="col-md-6 col-lg-3">
-          <div className="card border-0 shadow-sm h-100">
-            <div className="card-body">
+          <div className="card border-primary shadow-lg  h-100">
+            <div className="card-body ">
               <div className="d-flex justify-content-between align-items-start">
                 <div>
                   <p className="text-muted mb-1">Total Recognitions</p>
@@ -94,8 +94,9 @@ const Home: React.FC = () => {
         </div>
 
         <div className="col-md-6 col-lg-3">
-          <div className="card border-0 shadow-sm h-100">
-            <div className="card-body">
+          
+          <div className="card border-primary shadow-lg h-100" > 
+            <div className="card-body ">
               <div className="d-flex justify-content-between align-items-start">
                 <div>
                   <p className="text-muted mb-1">Movie Recognitions</p>
@@ -110,7 +111,7 @@ const Home: React.FC = () => {
         </div>
 
         <div className="col-md-6 col-lg-3">
-          <div className="card border-0 shadow-sm h-100">
+          <div className="card  border-primary shadow-lg h-100">
             <div className="card-body">
               <div className="d-flex justify-content-between align-items-start">
                 <div>
@@ -126,7 +127,7 @@ const Home: React.FC = () => {
         </div>
 
         <div className="col-md-6 col-lg-3">
-          <div className="card border-0 shadow-sm h-100">
+          <div className="card border-primary shadow-lg h-100">
             <div className="card-body">
               <div className="d-flex justify-content-between align-items-start">
                 <div>
@@ -148,7 +149,7 @@ const Home: React.FC = () => {
         <div className="row g-4">
           <div className="col-md-6 col-lg-3">
             <Link to="/movie" className="text-decoration-none">
-              <div className="card border-0 shadow-sm h-100 hover-shadow">
+              <div className="card border-0 shadow-lg h-100 hover-shadow">
                 <div className="card-body text-center p-4">
                   <div className="bg-primary bg-opacity-10 d-inline-flex p-4 rounded-circle mb-3">
                     <FaFilm className="text-primary" size={32} />
@@ -167,7 +168,7 @@ const Home: React.FC = () => {
 
           <div className="col-md-6 col-lg-3">
             <Link to="/music" className="text-decoration-none">
-              <div className="card border-0 shadow-sm h-100 hover-shadow">
+              <div className="card border-0 shadow-lg h-100 hover-shadow">
                 <div className="card-body text-center p-4">
                   <div className="bg-success bg-opacity-10 d-inline-flex p-4 rounded-circle mb-3">
                     <FaMusic className="text-success" size={32} />
@@ -186,7 +187,7 @@ const Home: React.FC = () => {
 
           <div className="col-md-6 col-lg-3">
             <Link to="/history" className="text-decoration-none">
-              <div className="card border-0 shadow-sm h-100 hover-shadow">
+              <div className="card border-0 shadow-lg h-100 hover-shadow">
                 <div className="card-body text-center p-4">
                   <div className="bg-info bg-opacity-10 d-inline-flex p-4 rounded-circle mb-3">
                     <FaHistory className="text-info" size={32} />
@@ -205,7 +206,7 @@ const Home: React.FC = () => {
 
           <div className="col-md-6 col-lg-3">
             <Link to="/profile" className="text-decoration-none">
-              <div className="card border-0 shadow-sm h-100 hover-shadow">
+              <div className="card border-0 shadow-lg h-100 hover-shadow">
                 <div className="card-body text-center p-4">
                   <div className="bg-warning bg-opacity-10 d-inline-flex p-4 rounded-circle mb-3">
                     <FaUser className="text-warning" size={32} />

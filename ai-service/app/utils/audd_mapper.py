@@ -72,7 +72,7 @@ class AudDMapper:
 
                 duration=result.get("timecode", ""),
 
-                isrc=apple.get("isrc", ""),
+                isrc = apple.get("isrc", ""),
 
                 albumArturl=album_art,
 
@@ -84,7 +84,7 @@ class AudDMapper:
                 
                 songLink = result.get("song_link", " "),
                 
-                thumbnail = result["spotify"]["album"]["images"][0]["url"]
+                thumbnail = result.get("spotify",{}).get("album",{}).get("images",[{}])[0].get("url")
                 
                 
                 

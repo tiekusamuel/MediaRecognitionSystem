@@ -8,7 +8,7 @@ namespace backend.DTOs.Responses
         public List<string> Errors { get; set; } = new();
         public DateTime Timestamp { get; set; } = DateTime.UtcNow;
 
-        public static ApiResponse<T> SuccessResponse(T data, string message = "Operation successful")
+        public static ApiResponse<T> SuccessResponse(T? data, string message = "Operation successful")
         {
             return new ApiResponse<T>
             {

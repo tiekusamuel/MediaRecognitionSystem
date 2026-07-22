@@ -11,13 +11,16 @@ namespace backend.Services
     {
         private readonly ILogger<MovieRecognitionService> _logger;
         private readonly IRecognitionHistoryRepository _historyRepository;
+        private readonly IMovieAIServiceClient _movieAIServiceClient;
 
         public MovieRecognitionService(
             ILogger<MovieRecognitionService> logger,
-            IRecognitionHistoryRepository historyRepository)
+            IRecognitionHistoryRepository historyRepository,
+            IMovieAIServiceClient movieAIServiceClient)
         {
             _logger = logger;
             _historyRepository = historyRepository;
+            _movieAIServiceClient = movieAIServiceClient;
         }
 
         public async Task<MovieRecognitionResultDto> RecognizeFromVideoAsync(
@@ -31,11 +34,17 @@ namespace backend.Services
             {
                 _logger.LogInformation("Starting video recognition for file: {FileName}", fileName);
 
-                // Simulate video processing
-                await Task.Delay(2000, cancellationToken);
+                
+                var result = await _movieAIServiceClient.RecognizeVideoAsync(
+                    videoStream,
+                    fileName,
+                    cancellationToken);
 
-                // Simulate recognition logic
-                var result = SimulateMovieRecognition();
+                result.RecognitionId = Guid.NewGuid();
+                result.RecognizedAt = DateTime.UtcNow;
+
+                Console.WriteLine(result);
+    
 
                 // Save to history
                 await SaveRecognitionHistoryAsync(
@@ -66,11 +75,12 @@ namespace backend.Services
             {
                 _logger.LogInformation("Starting image recognition for file: {FileName}", fileName);
 
-                // Simulate image processing
-                await Task.Delay(1500, cancellationToken);
-
-                // Simulate recognition logic
-                var result = SimulateMovieRecognition();
+               
+               
+                var result = await _movieAIServiceClient.RecognizeImageAsync(
+                    imageStream,
+                    fileName,
+                    cancellationToken);
 
                 // Save to history
                 await SaveRecognitionHistoryAsync(

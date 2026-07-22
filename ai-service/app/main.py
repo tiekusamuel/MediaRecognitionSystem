@@ -5,6 +5,7 @@ from app.api.health import router as health_router
 from app.config.settings import settings
 
 from app.api.music import router as music_router
+from app.api.movie import router as movie_router
 
 
 
@@ -16,6 +17,7 @@ app = FastAPI(
 app.include_router(health_router)
 
 app.include_router(music_router)
+app.include_router(movie_router)
 
 @app.get("/")
 async def root():

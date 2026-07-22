@@ -58,9 +58,9 @@ const MovieRecognition: React.FC = () => {
           setUploadProgress(progress);
         }
       );
-  
+
+      console.log("Response:", response);
       setResult(response);
-      console.log(response);
     } catch (err: any) {
       console.error('Movie recognition failed:', err);
       setError(

@@ -30,7 +30,7 @@ namespace backend.Controllers
             {
                 return BadRequest(new { message = ex.Message });
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 return StatusCode(500, new { message = "An error occurred during registration" });
             }
@@ -48,7 +48,7 @@ namespace backend.Controllers
             {
                 return Unauthorized(new { message = ex.Message });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return StatusCode(500, new { message = "An error occurred during login" });
             }
@@ -77,7 +77,7 @@ namespace backend.Controllers
             {
                 return NotFound(new { message = ex.Message });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return StatusCode(500, new { message = "An error occurred while fetching profile" });
             }
@@ -101,7 +101,7 @@ namespace backend.Controllers
             {
                 return BadRequest(new { message = ex.Message });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return StatusCode(500, new { message = "An error occurred while updating profile" });
             }
@@ -125,7 +125,7 @@ namespace backend.Controllers
             {
                 return Unauthorized(new { message = ex.Message });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return StatusCode(500, new { message = "An error occurred while changing password" });
             }

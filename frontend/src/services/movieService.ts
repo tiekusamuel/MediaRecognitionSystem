@@ -21,16 +21,16 @@ export interface Movie{
   title: string;
   poster: string;
   genre: string[];
-  year: number;
+  releaseYear: number;
   director: string;
   cast: string[];
+  duration: string;
   synopsis: string;
-  confidence: number;
   trailerUrl?: string;
-  recognitionDate: string;
-  ImdbId : string;
+  imdbId : string;
   rating: number;
 }
+
 
 
 // Backend API Response wrapper
@@ -70,6 +70,8 @@ const movieService = {
         onUploadProgress,
       }
     );
+
+    console.log(response.data.data)
 
     return response.data.data;  // Extract data from ApiResponse wrapper
     

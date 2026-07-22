@@ -39,3 +39,40 @@ class MusicRecognitionResponse(BaseModel):
     message: str
 
     track: TrackResponse | None
+    
+
+class MovieResponse(BaseModel):
+
+    title: str
+
+    poster: str
+
+    genre: list[str]
+
+    releaseyear: int
+
+    director: str
+
+    cast: list[str]
+
+    duration: str
+
+    synopsis: str
+
+    trailerUrl: str
+
+    imdbId: str
+
+    rating: float
+
+
+
+class MovieRecognitionResponse(BaseModel):
+
+    IsSuccessful: bool
+
+    confidenceScore: float
+
+    message: str
+
+    movie: MovieResponse | None

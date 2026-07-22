@@ -8,6 +8,8 @@ interface MovieResultCardProps {
 }
 
 
+
+
 /**
  * Movie recognition result card component
  */
@@ -47,7 +49,7 @@ const MovieResultCard: React.FC<MovieResultCardProps> = ({ movie, onPlayTrailer 
               <div className="d-flex flex-wrap gap-3 text-muted">
                 <span>
                   <FaCalendar className="me-1" />
-                  {movie.movie?.year}
+                  {movie.movie?.releaseYear}
                 </span>
                 <span>
                   <FaFilm className="me-1" />
@@ -94,9 +96,6 @@ const MovieResultCard: React.FC<MovieResultCardProps> = ({ movie, onPlayTrailer 
                   Watch Trailer
                 </button>
               )}
-              <button className="btn btn-outline-secondary">
-                More Details
-              </button>
             </div>
           </div>
         </div>

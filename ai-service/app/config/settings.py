@@ -12,6 +12,12 @@ class Settings(BaseSettings):
     TEMP_FOLDER: str = "temp"
 
     MAX_AUDIO_SIZE_MB: int = 20
+    
+    GEMINI_API_KEY: str = ""
+    
+    HF_TOKEN: str =""
+    
+    TMDB_API_KEY: str = ""
 
     model_config = SettingsConfigDict(
         env_file=".env",
