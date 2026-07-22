@@ -14,6 +14,6 @@
 
 .env
 .env.*
-!.env.example
+
 
 venv
