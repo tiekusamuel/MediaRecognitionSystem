@@ -8,8 +8,8 @@ import { FaHome, FaFilm, FaMusic, FaHistory, FaUser, FaCog } from 'react-icons/f
 const Sidebar: React.FC = () => {
   const navItems = [
     { path: '/home', icon: FaHome, label: 'Dashboard' },
-    { path: '/movie', icon: FaFilm, label: 'Movie Recognition' },
     { path: '/music', icon: FaMusic, label: 'Music Recognition' },
+    { path: '/movie', icon: FaFilm, label: 'Movie Recognition' },
     { path: '/history', icon: FaHistory, label: 'History' },
     { path: '/profile', icon: FaUser, label: 'Profile' },
   ];

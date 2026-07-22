@@ -71,22 +71,22 @@ const Navbar: React.FC = () => {
                 </li>
                 <li className="nav-item">
                   <Link
-                    className={`nav-link ${isActive('/movie') ? 'active' : ''}`}
-                    to="/movie"
-                    onClick={closeNavbar}
-                  >
-                    <FaFilm className="me-1" />
-                    Movie Recognition
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link
                     className={`nav-link ${isActive('/music') ? 'active' : ''}`}
                     to="/music"
                     onClick={closeNavbar}
                   >
                     <FaMusic className="me-1" />
                     Music Recognition
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link
+                    className={`nav-link ${isActive('/movie') ? 'active' : ''}`}
+                    to="/movie"
+                    onClick={closeNavbar}
+                  >
+                    <FaFilm className="me-1" />
+                    Movie Recognition
                   </Link>
                 </li>
                 <li className="nav-item">
