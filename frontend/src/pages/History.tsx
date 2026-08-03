@@ -4,6 +4,9 @@ import historyService from '../services/historyService';
 import type { HistoryItem, HistoryFilters } from '../services/historyService';
 import HistoryCard from '../components/HistoryCard';
 import LoadingSpinner from '../components/LoadingSpinner';
+import MovieResultCard  from '../components/MovieResultCard';
+import MusicResultCard from '../components/MusicResultCard';
+
 
 /**
  * Recognition history page
@@ -21,6 +24,9 @@ const History: React.FC = () => {
   });
   const [totalPages, setTotalPages] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
+  const [selectedItem, setSelectedItem] = useState<HistoryItem | null>(null);
+  const [showModal, setShowModal] = useState(false);
+
 
   useEffect(() => {
     loadHistory();
@@ -78,10 +84,20 @@ const History: React.FC = () => {
   };
 
   const handleView = (id: string) => {
-    console.log('View details for:', id);
-    // Navigate to detail view or show modal
+    const item = history.find((item) => item.id === id);
+
+      if (item) {
+        setSelectedItem(item);
+        setShowModal(true);
+      }
+
+      console.log("response for details", item);
   };
 
+const closeModal = () => {
+  setSelectedItem(null);
+  setShowModal(false);
+  };
   return (
     <div>
       {/* Page Header */}
@@ -233,6 +249,76 @@ const History: React.FC = () => {
           </div>
         </div>
       )}
+
+
+      {showModal && selectedItem && (
+        <div
+          className="modal fade show d-block"
+          tabIndex={-1}
+          style={{
+            backgroundColor: "rgba(0,0,0,0.5)"
+          }}
+        >
+
+          <div className="modal-dialog modal-lg modal-dialog-centered">
+
+            <div className="modal-content">
+
+
+              <div className="modal-header">
+
+                <h5 className="modal-title">
+                  Recognition Details
+                </h5>
+
+
+                <button
+                  className="btn-close"
+                  onClick={closeModal}
+                />
+
+              </div>
+
+
+              <div className="modal-body">
+
+
+                {selectedItem.type === "movie" && (
+                  <MovieResultCard
+                    movie={selectedItem.details}
+                  />
+                )}
+
+
+                {selectedItem.type === "music" && (
+                  <MusicResultCard
+                    music={selectedItem.details}
+                  />
+                )}
+
+
+              </div>
+
+
+              <div className="modal-footer">
+
+                <button
+                  className="btn btn-secondary"
+                  onClick={closeModal}
+                >
+                  Close
+                </button>
+
+              </div>
+
+
+            </div>
+
+          </div>
+
+        </div>
+      )}
+
     </div>
   );
 };

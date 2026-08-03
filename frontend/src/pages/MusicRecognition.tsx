@@ -5,7 +5,7 @@ import MusicResultCard from '../components/MusicResultCard';
 import LoadingSpinner from '../components/LoadingSpinner';
 import musicService, { type MusicRecognitionResponse } from '../services/musicService';
 
-const RECORDING_DURATION = 15; // 15 seconds
+const RECORDING_DURATION = 10; // 15 seconds
 
 /**
  * Music recognition page - Modern unified interface

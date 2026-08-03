@@ -34,6 +34,7 @@ export interface MusicTrack {
   spotifyUrl: string;
   appleMusicUrl: string;
   songLink: string;
+  thumbnail: string;
 
   
 }
@@ -117,6 +118,8 @@ const musicService = {
         },
       }
     );
+
+    console.log("response:", response);
 
     return response.data.data;
   },

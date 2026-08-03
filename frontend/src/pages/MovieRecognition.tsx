@@ -17,6 +17,9 @@ const MovieRecognition: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
+  const [stage, setStage] = useState<"idle" | "uploading" | "analyzing">("idle");
+    
+
 
   const handleFileSelect = (file: File) => {
     setSelectedFile(file);
@@ -32,6 +35,7 @@ const MovieRecognition: React.FC = () => {
   
 
     setLoading(true);
+    setStage("uploading");
     setError(null);
     setUploadProgress(0);
 
@@ -56,6 +60,9 @@ const MovieRecognition: React.FC = () => {
           const loaded = progressEvent?.loaded ?? 0;
           const progress = total ? Math.round((loaded * 100) / total) : 0;
           setUploadProgress(progress);
+           if (progress >= 100) {
+              setStage("analyzing");
+            }
         }
       );
 
@@ -70,6 +77,7 @@ const MovieRecognition: React.FC = () => {
     } finally {
       setLoading(false);
       setUploadProgress(0);
+      setStage("idle");
     }
   };
 
@@ -100,7 +108,7 @@ const MovieRecognition: React.FC = () => {
       </div>
 
       {/* Upload Section */}
-      {!result && (
+      {!result && !loading && (
         <div className="row justify-content-center mb-5">
           <div className="col-lg-8">
             <div className="card shadow-sm">
@@ -123,7 +131,7 @@ const MovieRecognition: React.FC = () => {
                 )}
 
                 {/* Upload Progress */}
-                {loading && uploadProgress > 0 && (
+                {loading && stage ==="uploading" && (
                   <div className="mt-4">
                     <div className="d-flex justify-content-between mb-2">
                       <span className="text-muted">Uploading...</span>
@@ -161,9 +169,15 @@ const MovieRecognition: React.FC = () => {
       )}
 
       {/* Loading State */}
-      {loading && uploadProgress === 0 && (
+      {loading && stage === "analyzing" && (
         <div className="text-center py-5">
-          <LoadingSpinner message="Analyzing video... This may take a moment." />
+          <LoadingSpinner message="Analyzing movie... Please wait." />
+
+          <div className="mt-4">
+            <p>✅ Upload complete</p>
+            <p>🎬 Extracting frames...</p>
+            <p>🤖 Identifying movie...</p>
+          </div>
         </div>
       )}
 

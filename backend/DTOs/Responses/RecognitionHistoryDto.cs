@@ -10,6 +10,11 @@ namespace backend.DTOs.Responses
         public double ConfidenceScore { get; set; }
         public bool IsSuccessful { get; set; }
         public string Result { get; set; } = string.Empty;
+
+        public string Poster { get; set; }= string.Empty;
+        
+        
+        
         public DateTime RecognizedAt { get; set; }
     }
 

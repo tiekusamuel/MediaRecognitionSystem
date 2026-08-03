@@ -17,17 +17,17 @@ class TrackResponse(BaseModel):
 
     isrc: str
 
-    albumArturl: str
+    albumArturl: str | None = None
 
     previewUrl: str
     
-    spotifyUrl : str
+    spotifyUrl : str | None = None
     
     appleMusicUrl: str
     
     songLink : str
     
-    thumbnail : str
+    thumbnail : str | None = None
 
 
 class MusicRecognitionResponse(BaseModel):

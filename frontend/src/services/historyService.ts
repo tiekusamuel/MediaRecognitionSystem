@@ -5,11 +5,10 @@ export interface HistoryItem {
   id: string;
   type: 'movie' | 'music';
   title: string;
-  AlbumArtUrl: string;
   confidence: number;
   recognitionDate: string;
   details?: any;
-  thumbnail : string;
+  poster : string;
 }
 
 
@@ -68,6 +67,7 @@ const historyService = {
     const response = await api.get<ApiResponse<HistoryResponse>>(
       `History?${params.toString()}`
     );
+    console.log(response);
     return response.data.data;
   },
 

@@ -35,11 +35,11 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ item, onDelete, onView }) => 
         {/* Thumbnail */}
         <div className="col-md-2">
           <img
-            src={item.thumbnail || '/placeholder.png'}
+            src={item.poster || '/placeholder.png'}
             
             alt={item.title}
-            className="img-fluid rounded-start h-100 object-fit-cover"
-            style={{ minHeight: '120px' }}
+            className="rounded-start object-fit-cover"
+            style={{ width: "100px", height: "100px" }}
           />
           
         </div>
@@ -102,3 +102,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ item, onDelete, onView }) => 
 };
 
 export default HistoryCard;
+
+
+
+

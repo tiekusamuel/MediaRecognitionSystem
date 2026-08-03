@@ -27,6 +27,7 @@ class AudDService:
                     data=data,
                     files=files
                 )
+        
 
         response.raise_for_status()
 

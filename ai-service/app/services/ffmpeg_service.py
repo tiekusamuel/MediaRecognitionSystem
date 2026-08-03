@@ -12,14 +12,9 @@ class FFmpegService:
         self.temp_folder = Path("temp")
 
         self.frames_folder = ( self.temp_folder / "frames")
-            
-        
 
         self.frames_folder.mkdir(parents=True, exist_ok=True)
             
-
-
-
     def extract_frames(
         self,
         video_path: str,
@@ -39,13 +34,10 @@ class FFmpegService:
             exist_ok=True
         )
 
-
         output_pattern = (  output_folder / "frame_%04d.jpg")
            
-        
         command = ["ffmpeg","-hide_banner","-loglevel","error"]
-            
-
+        
         # Start position
         if start_time is not None:
 
@@ -56,16 +48,12 @@ class FFmpegService:
                 ]
             )
 
-
-
         command.extend(
             [
                 "-i",
                 video_path
             ]
         )
-
-
 
         # End position
         if end_time is not None:
@@ -93,7 +81,6 @@ class FFmpegService:
                 )
 
 
-
         command.extend(
             [
                 "-vf",
@@ -107,7 +94,6 @@ class FFmpegService:
         )
 
 
-
         subprocess.run(
             command,
             stdout=subprocess.PIPE,
@@ -116,16 +102,12 @@ class FFmpegService:
         )
 
 
-
         frames = sorted( output_folder.glob("*.jpg"))
             
-
         return [
             str(frame)
             for frame in frames
         ]
-
-
 
 
     def cleanup(

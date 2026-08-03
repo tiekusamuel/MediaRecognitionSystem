@@ -132,16 +132,23 @@ namespace backend.Services
                 RecognitionType.Movie,
                 cancellationToken);
 
-            var items = histories.Select(h => new RecognitionHistoryDto
+            var items = histories.Select(h =>
             {
-                Id = h.Id,
-                Type = h.Type,
-                FileName = h.FileName,
-                ConfidenceScore = h.ConfidenceScore,
-                IsSuccessful = h.IsSuccessful,
-                Result = GetResultSummary(h.ResultData),
-                RecognizedAt = h.CreatedAt
+                var result = JsonSerializer.Deserialize<MovieRecognitionResultDto>(h.ResultData);
+
+                return new RecognitionHistoryDto
+                {
+                    Id = h.Id,
+                    Type = h.Type,
+                    FileName = h.FileName,
+                    ConfidenceScore = h.ConfidenceScore,
+                    IsSuccessful = h.IsSuccessful,
+                    Result = result?.Movie?.Title ?? "No match found",
+                    Poster = result?.Movie?.Poster ?? "No movie poster",
+                    RecognizedAt = h.CreatedAt
+                };
             }).ToList();
+
 
             return new RecognitionHistoryListDto
             {
@@ -196,35 +203,6 @@ namespace backend.Services
             }
         }
 
-        private MovieRecognitionResultDto SimulateMovieRecognition()
-        {
-            var random = new Random();
-            var confidence = random.NextDouble() * 0.3 + 0.7; // 70-100%
-
-            return new MovieRecognitionResultDto
-            {
-                RecognitionId = Guid.NewGuid(),
-                IsSuccessful = true,
-                ConfidenceScore = Math.Round(confidence, 2),
-                Movie = new MovieDto
-                {
-                    Id = Guid.NewGuid(),
-                    Title = "The Shawshank Redemption",
-                    Poster = "https://example.com/posters/shawshank.jpg",
-                    Genre = ["Drama"],
-                    ReleaseYear = 1994,
-                    Director = "Frank Darabont",
-                    Cast = ["Nba Twothings"],
-                    Duration = "2h 22m",
-                    Synopsis="This movie is about yahoo boys.",
-                    TrailerUrl="https://example.com/posters/shawshank.jpg",
-                    ImdbId = "tt0111161",
-                    Rating = 9.3
-                },
-               
-                RecognizedAt = DateTime.UtcNow,
-                Message = "Movie scene recognized successfully"
-            };
-        }
+        
     }
 }

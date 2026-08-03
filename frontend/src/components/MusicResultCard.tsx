@@ -10,6 +10,8 @@ interface MusicResultCardProps {
 /**
  * Music recognition result card component
  */
+
+
 const MusicResultCard: React.FC<MusicResultCardProps> = ({ music }) => {
   const getConfidenceColor = (confidence: number): string => {
     if (confidence >= 90) return 'success';
@@ -141,10 +143,11 @@ const formatTime = (seconds: number) => {
               </div>
             </div>
 
-            {/* Streaming Links */}
-            {music.track.spotifyUrl && (
+           {/* Streaming Links */}
+            {(music.track.spotifyUrl || music.track.appleMusicUrl) && (
               <div className="mb-4">
                 <strong className="d-block mb-2">Listen on:</strong>
+
                 <div className="d-flex gap-2 flex-wrap">
                   {music.track.spotifyUrl && (
                     <a
@@ -157,6 +160,7 @@ const formatTime = (seconds: number) => {
                       Spotify
                     </a>
                   )}
+
                   {music.track.appleMusicUrl && (
                     <a
                       href={music.track.appleMusicUrl}
@@ -168,7 +172,6 @@ const formatTime = (seconds: number) => {
                       Apple Music
                     </a>
                   )}
-                  
                 </div>
               </div>
             )}
@@ -200,6 +203,17 @@ const formatTime = (seconds: number) => {
                                     ? "⏸ Pause Sample"
                                     : "▶ Play Sample"}
                             </button>
+                            {music.track.songLink && (
+                              <a
+                                href={music.track.songLink}
+                                download
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn btn-outline-secondary"
+                              >
+                                ⬇ Download Preview
+                              </a>
+                            )}
 
                             <span className="small text-muted">
                                 {formatTime(currentTime)} / {formatTime(duration)}

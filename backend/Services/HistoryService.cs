@@ -8,7 +8,6 @@ namespace backend.Services
         private readonly IMusicRecognitionService _musicRecognitionService;
         private readonly IMovieRecognitionService _movieRecognitionService;
         private readonly ILogger<HistoryService> _logger;
-
         public HistoryService(
             IMusicRecognitionService musicRecognitionService,
             IMovieRecognitionService movieRecognitionService,
@@ -47,7 +46,7 @@ namespace backend.Services
                                 Id = m.Id,
                                 Type = "music",
                                 Title = string.IsNullOrWhiteSpace(m.Result) ? m.FileName : m.Result,
-                                thumbnail = string.Empty,
+                                Poster = m.Poster,
                                 Confidence = m.ConfidenceScore,
                                 RecognitionDate = m.RecognizedAt,
                                 Details = m
@@ -79,7 +78,7 @@ namespace backend.Services
                                 Id = m.Id,
                                 Type = "movie",
                                 Title = string.IsNullOrWhiteSpace(m.Result) ? m.FileName : m.Result,
-                                thumbnail = string.Empty,
+                                Poster = m.Poster,
                                 Confidence = m.ConfidenceScore,
                                 RecognitionDate = m.RecognizedAt,
                                 Details = m
@@ -140,7 +139,7 @@ namespace backend.Services
                         Id = musicResult.RecognitionId,
                         Type = "music",
                         Title = musicResult.Track?.Title ?? musicResult.Message,
-                        thumbnail = musicResult.Track?.thumbnail ?? string.Empty,
+                        Poster = musicResult.Track?.AlbumArtUrl  ?? string.Empty,
                         Confidence = musicResult.ConfidenceScore,
                         RecognitionDate = musicResult.RecognizedAt,
                         Details = musicResult
@@ -169,7 +168,7 @@ namespace backend.Services
                         Id = movieResult.RecognitionId,
                         Type = "movie",
                         Title = movieResult.Movie?.Title ?? movieResult.Message,
-                        thumbnail = movieResult.Movie?.Poster ?? string.Empty,
+                        Poster = movieResult.Movie?.Poster ?? string.Empty,
                         Confidence = movieResult.ConfidenceScore,
                         RecognitionDate = movieResult.RecognizedAt,
                         Details = movieResult

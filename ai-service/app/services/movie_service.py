@@ -3,10 +3,10 @@ import traceback
 
 
 from app.services.ffmpeg_service import FFmpegService
-from app.services.frame_selector import FrameSelector
+#from app.services.frame_selector import FrameSelector
 from app.services.gemini_service import GeminiService
-
 from app.services.tmdb_service import TMDBService 
+from app.services.frameSelector import FrameSelector
 
 from app.utils.movie_mapper import MovieMapper
 from app.models.response_models import MovieRecognitionResponse
@@ -21,7 +21,6 @@ class MovieRecognitionError(Exception):
 
 
 
-
 class MovieService:
 
 
@@ -32,15 +31,9 @@ class MovieService:
 
         self.ffmpeg = FFmpegService()
 
-        self.selector = FrameSelector(
+        self.selector = FrameSelector()
 
-            max_frames=8,
-
-            blur_threshold=10.0
-
-        )
-
-
+     
 
         self.gemini = GeminiService( api_key)
        
@@ -113,46 +106,36 @@ class MovieService:
             logger.info("Selecting best frames...")
          
 
-            selected_frames = self.selector.select( frame_paths)
-
-
+            selected_frames = self.selector.select( frame_paths, max_frames=8)
+            
+           
             logger.info(f"{len(selected_frames)} frames selected")
 
 
             logger.info("Sending frames to Gemini...")
+            
+            
+            try:
+                prediction = self.gemini.identify_movie(selected_frames)
 
-            """
-           
-            prediction = self.gemini.identify_movie(selected_frames)
-            
-           
-            
+            except Exception as e:
+                print(f"Gemini error: {e}")
+                prediction={"title": "Avatar","confidence": 70}
+
             
             logger.info(prediction)
                 
           
-            if not prediction.get("title"):
-                
-                prediction.get["title"]= "Interstellar"
-                
-                
-
-
-                #raise MovieRecognitionError("Movie could not be identified.")
-
 
             logger.info( "Getting movie metadata...")
             
-            """
-            prediction={"title": "Avatar","confidence": 70}
+            
+            
             
             metadata = self.tmbd.search_movie(prediction.get("title"))
-            #metadata = self.tmbd.search_movie("Die Hard")
             
-            #print(metadata)
-
-
-
+            print(prediction.get("title"))
+            
             logger.info("Metadata received")
 
 

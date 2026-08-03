@@ -14,7 +14,6 @@ class TMDBService:
             "accept": "application/json"
         }
 
-
     def search_movie(
         self,
         title: str
@@ -30,18 +29,12 @@ class TMDBService:
             }
         )
         
-        
-
         response.raise_for_status()
 
         data = response.json()
-        
-       
 
         results = data.get("results", [])
         
-        
-
         if not results:
             return None
 
@@ -67,7 +60,5 @@ class TMDBService:
         response.raise_for_status()
         
         movie = response.json()
-        #print(movie)
         
-
         return movie

@@ -8,6 +8,7 @@ from app.models.response_models import (
 
 from app.services.audio_processor import AudioProcessor
 from app.utils.audd_mapper import AudDMapper
+from app.utils.same import AudDMapper
 
 class MusicService:
 
@@ -15,6 +16,7 @@ class MusicService:
 
         self.audio_processor = AudioProcessor()
         self.audd_service = AudDService()
+        self.same = AudDMapper()
 
     async def recognize(
         self,
