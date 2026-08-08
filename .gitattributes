@@ -1,0 +1,15 @@
+# Python virtual environment
+ai-service/venv/** linguist-vendored
+ai-service/.venv/** linguist-vendored
+
+# Python generated files
+ai-service/**/__pycache__/** linguist-generated
+ai-service/**/*.pyc linguist-generated
+
+# Node dependencies/build output
+frontend/node_modules/** linguist-vendored
+frontend/dist/** linguist-generated
+
+# .NET build output
+backend/bin/** linguist-generated
+backend/obj/** linguist-generated
