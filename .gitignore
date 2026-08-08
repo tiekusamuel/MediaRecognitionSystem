@@ -1,0 +1,96 @@
+# =========================
+# Environment / Secrets
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Node / React / Vite
+# =========================
+node_modules/
+dist/
+build/
+.vite/
+coverage/
+.npm/
+*.log
+
+# =========================
+# Python / FastAPI
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Python build files
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# =========================
+# .NET / C#
+# =========================
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# .NET generated files
+TestResults/
+*.nupkg
+packages/
+
+# =========================
+# VS Code
+# =========================
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# =========================
+# OS Files
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# Temporary files
+# =========================
+*.tmp
+*.temp
+*.swp
+*.bak
+
+# =========================
+# Database / Local files
+# =========================
+*.db
+*.sqlite
+*.sqlite3
+
+# =========================
+# Uploaded / Generated media
+# =========================
+uploads/
+temp/
+tmp/
+frames/

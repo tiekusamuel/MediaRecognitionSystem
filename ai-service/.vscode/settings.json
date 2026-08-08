@@ -1,4 +1,0 @@
-{
-    "dotnet.defaultSolution": "backend.slnx",
-    "python-envs.defaultEnvManager": "ms-python.python:system"
-}
