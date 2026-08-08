@@ -1,10 +1,10 @@
 # Python virtual environment
-Services/venv/** linguist-vendored
-Services/.venv/** linguist-vendored
+venv/** linguist-vendored
+.venv/** linguist-vendored
 
 # Python generated files
-Services/**/__pycache__/** linguist-generated
-Services/**/*.pyc linguist-generated
+__pycache__/** linguist-generated
+.pyc linguist-generated
 
 # Node dependencies/build output
 frontend/node_modules/** linguist-vendored
