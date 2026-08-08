@@ -93,15 +93,20 @@ namespace backend.Services
                 RecognitionType.Music,
                 cancellationToken);
 
-            var items = histories.Select(h => new RecognitionHistoryDto
+            var items = histories.Select(h => 
             {
-                Id = h.Id,
-                Type = h.Type,
-                FileName = h.FileName,
-                ConfidenceScore = h.ConfidenceScore,
-                IsSuccessful = h.IsSuccessful,
-                Result = GetResultSummary(h.ResultData),
-                RecognizedAt = h.CreatedAt
+                var result = JsonSerializer.Deserialize<MusicRecognitionResultDto>(h.ResultData);
+                return new RecognitionHistoryDto
+                {
+                    Id = h.Id,
+                    Type = h.Type,
+                    FileName = h.FileName,
+                    ConfidenceScore = h.ConfidenceScore,
+                    IsSuccessful = h.IsSuccessful,
+                    Result = result?.Track?.Title ?? "No match found",
+                    Poster = result?.Track?.thumbnail ?? "No album art",
+                    RecognizedAt = h.CreatedAt
+                };
             }).ToList();
 
             return new RecognitionHistoryListDto

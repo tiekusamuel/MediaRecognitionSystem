@@ -53,7 +53,7 @@ const Footer: React.FC = () => {
             <h6 className="fw-bold mb-3">Connect With Us</h6>
             <div className="d-flex gap-3">
               <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-muted">
-                <FaGithub size={24} />
+                <FaGithub size={24} /> 
               </a>
               <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-muted">
                 <FaTwitter size={24} />

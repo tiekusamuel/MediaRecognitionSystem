@@ -3,7 +3,6 @@ import traceback
 
 
 from app.services.ffmpeg_service import FFmpegService
-#from app.services.frame_selector import FrameSelector
 from app.services.gemini_service import GeminiService
 from app.services.tmdb_service import TMDBService 
 from app.services.frameSelector import FrameSelector
@@ -32,22 +31,14 @@ class MovieService:
         self.ffmpeg = FFmpegService()
 
         self.selector = FrameSelector()
-
-     
-
-        self.gemini = GeminiService( api_key)
-       
-        
+        self.gemini = GeminiService( api_key)  
         self.tmbd= TMDBService()
-        
-
         self.mapper = MovieMapper()
 
 
     async def recognize(
 
         self,
-
         video_path: str,
 
         start_time_seconds: int | None = None,
@@ -93,18 +84,12 @@ class MovieService:
             )
             
            
-            logger.info(f"Extracted {len(frame_paths)} frames")
-
-           
+            
 
             if not frame_paths:
 
                 raise MovieRecognitionError("No frames extracted from video.")
 
-       
-
-            logger.info("Selecting best frames...")
-         
 
             selected_frames = self.selector.select( frame_paths, max_frames=8)
             
@@ -112,23 +97,14 @@ class MovieService:
             logger.info(f"{len(selected_frames)} frames selected")
 
 
-            logger.info("Sending frames to Gemini...")
-            
             
             try:
+                
                 prediction = self.gemini.identify_movie(selected_frames)
 
             except Exception as e:
                 print(f"Gemini error: {e}")
                 prediction={"title": "Avatar","confidence": 70}
-
-            
-            logger.info(prediction)
-                
-          
-
-            logger.info( "Getting movie metadata...")
-            
             
             
             
@@ -136,18 +112,12 @@ class MovieService:
             
             print(prediction.get("title"))
             
-            logger.info("Metadata received")
-
-
+           
             response = MovieMapper.to_response(prediction,metadata)
             
             
             print(response)
-
-
-            logger.info( "MOVIE RECOGNITION COMPLETED")
-
-           
+ 
 
             return response
 
@@ -196,8 +166,6 @@ class MovieService:
 
         finally:
             try:
-
-                logger.info("Cleaning temporary frames...")
 
                 self.ffmpeg.cleanup(frame_paths)
                 

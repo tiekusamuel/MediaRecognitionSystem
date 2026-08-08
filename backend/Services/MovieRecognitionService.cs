@@ -148,7 +148,7 @@ namespace backend.Services
                     RecognizedAt = h.CreatedAt
                 };
             }).ToList();
-
+            
 
             return new RecognitionHistoryListDto
             {
