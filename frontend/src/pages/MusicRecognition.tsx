@@ -199,7 +199,7 @@ const MusicRecognition: React.FC = () => {
       // Draw center circle
       canvasCtx.beginPath();
       canvasCtx.arc(centerX, centerY, radius - 10, 0, Math.PI * 2);
-      canvasCtx.strokeStyle = 'rgba(59, 130, 246, 0.3)';
+      canvasCtx.strokeStyle = 'rgba(1, 3, 6, 0.3)';
       canvasCtx.lineWidth = 2;
       canvasCtx.stroke();
 
@@ -1113,7 +1113,7 @@ const MusicRecognition: React.FC = () => {
         .result-title {
           font-size: 1.75rem;
           font-weight: 700;
-          color: #1a1a1a;
+          color: #6879be;
           margin: 0;
         }
 

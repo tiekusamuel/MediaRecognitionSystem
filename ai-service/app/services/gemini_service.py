@@ -40,7 +40,7 @@ class GeminiService:
 
         # 2. Enforce the JSON schema at the API level
         response = self.client.models.generate_content(
-            model="gemini-3.5-flash", 
+            model="gemini-3.6-flash", 
             contents=contents,
             config=types.GenerateContentConfig(
                 response_mime_type="application/json",
